@@ -33,7 +33,7 @@ export function Footer() {
           <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">WhatsApp</p>
           <a
             className="mt-3 inline-flex items-center gap-2 rounded-md bg-palm px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800"
-            href="https://wa.me/18095551234"
+            href="https://wa.me/18492570102"
             target="_blank"
             rel="noreferrer"
           >

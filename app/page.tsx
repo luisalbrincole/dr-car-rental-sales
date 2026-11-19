@@ -30,7 +30,7 @@ export default async function HomePage() {
               <ButtonLink href="/sales" variant="secondary">
                 View Cars for Sale
               </ButtonLink>
-              <ButtonLink href="https://wa.me/18095551234" variant="ghost">
+              <ButtonLink href="https://wa.me/18492570102" variant="ghost">
                 Contact on WhatsApp
               </ButtonLink>
             </div>
@@ -82,7 +82,7 @@ export default async function HomePage() {
             <div className="flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/import-services">View import services</ButtonLink>
               <ButtonLink
-                href="https://wa.me/18095551234?text=Hello%2C%20I%20want%20a%20car%20import%20consultation"
+                href="https://wa.me/18492570102?text=Hello%2C%20I%20want%20a%20car%20import%20consultation"
                 variant="ghost"
               >
                 WhatsApp consultation
@@ -153,7 +153,7 @@ export default async function HomePage() {
             <p className="mt-2 text-emerald-50">Send a booking request or message us directly on WhatsApp.</p>
           </div>
           <a
-            href="https://wa.me/18095551234"
+            href="https://wa.me/18492570102"
             target="_blank"
             rel="noreferrer"
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-palm transition hover:bg-emerald-50"

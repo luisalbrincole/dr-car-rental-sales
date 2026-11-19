@@ -57,7 +57,7 @@ export default function ImportServicesPage() {
               and registration or plate process guidance.
             </p>
             <a
-              href="https://wa.me/18095551234?text=Hello%2C%20I%20want%20a%20car%20import%20consultation"
+              href="https://wa.me/18492570102?text=Hello%2C%20I%20want%20a%20car%20import%20consultation"
               target="_blank"
               rel="noreferrer"
               className="focus-ring mt-8 inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-palm px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800"

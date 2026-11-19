@@ -1,4 +1,4 @@
-import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { PlaceholderButton } from "@/components/PlaceholderButton";
 import { getVehicles } from "@/lib/inventory";
@@ -26,12 +26,9 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
         />
         <Link href="/rentals" className="mb-6 inline-block font-semibold text-palm underline">Browse rental cars</Link>
         <div className="grid gap-4 text-sm text-slate-700">
-          <p className="flex items-center gap-3">
-            <MessageCircle className="text-palm" size={20} aria-hidden="true" /> WhatsApp: +1 809 555 1234
-          </p>
-          <p className="flex items-center gap-3">
-            <Phone className="text-palm" size={20} aria-hidden="true" /> Phone: +1 809 555 1234
-          </p>
+          <a className="flex items-center gap-3 font-medium text-palm hover:underline" href="https://wa.me/18492570102" target="_blank" rel="noreferrer">
+            <MessageCircle size={20} aria-hidden="true" /> WhatsApp +1 849-257-0102
+          </a>
           <p className="flex items-center gap-3">
             <Mail className="text-palm" size={20} aria-hidden="true" /> info@drcarrentalsales.com
           </p>

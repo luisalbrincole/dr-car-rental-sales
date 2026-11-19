@@ -89,7 +89,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
               {vehicle.type === "rental" ? "Request rental" : "Request this vehicle"}
             </Link>}
             <a
-              href={`https://wa.me/18095551234?text=Hello%2C%20I%20am%20interested%20in%20${encodeURIComponent(vehicle.title)}`}
+              href={`https://wa.me/18492570102?text=Hello%2C%20I%20am%20interested%20in%20${encodeURIComponent(vehicle.title)}`}
               target="_blank"
               rel="noreferrer"
               className="focus-ring inline-flex min-h-11 items-center justify-center rounded-md border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-ink transition hover:border-palm hover:text-palm"

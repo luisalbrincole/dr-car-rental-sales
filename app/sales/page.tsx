@@ -1,13 +1,13 @@
 import { SectionHeader } from "@/components/SectionHeader";
 import { VehicleGrid } from "@/components/VehicleGrid";
-import { vehicles } from "@/data/vehicles";
+import { getVehicles } from "@/lib/inventory";
 
 export const metadata = {
   title: "Cars for Sale | DR Car Rental & Sales"
 };
 
-export default function SalesPage() {
-  const sales = vehicles.filter((vehicle) => vehicle.type === "sale");
+export default async function SalesPage() {
+  const sales = (await getVehicles()).filter((vehicle) => vehicle.type === "sale");
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">

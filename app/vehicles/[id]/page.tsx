@@ -2,20 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarDays, Fuel, Gauge, MapPin, Settings, Users } from "lucide-react";
-import { vehicles, getVehicleById } from "@/data/vehicles";
+import { findVehicle } from "@/lib/inventory";
 import { formatMileage, formatUsd } from "@/lib/format";
 
 type VehicleDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export function generateStaticParams() {
-  return vehicles.map((vehicle) => ({ id: vehicle.id }));
-}
-
 export async function generateMetadata({ params }: VehicleDetailPageProps) {
   const { id } = await params;
-  const vehicle = getVehicleById(id);
+  const vehicle = await findVehicle(id);
 
   return {
     title: vehicle ? `${vehicle.title} | DR Car Rental & Sales` : "Vehicle | DR Car Rental & Sales"
@@ -24,7 +20,7 @@ export async function generateMetadata({ params }: VehicleDetailPageProps) {
 
 export default async function VehicleDetailPage({ params }: VehicleDetailPageProps) {
   const { id } = await params;
-  const vehicle = getVehicleById(id);
+  const vehicle = await findVehicle(id);
 
   if (!vehicle) {
     notFound();
@@ -52,8 +48,15 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         Back to {vehicle.type === "rental" ? "rentals" : "cars for sale"}
       </Link>
       <div className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-slate-100 shadow-soft">
-          <Image src={vehicle.imageUrl} alt={vehicle.title} fill className="object-cover" priority sizes="(min-width: 1024px) 58vw, 100vw" />
+        <div>
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-slate-100 shadow-soft">
+            <Image src={vehicle.imageUrl} alt={vehicle.title} fill className="object-cover" priority sizes="(min-width: 1024px) 58vw, 100vw" />
+          </div>
+          {(vehicle.imageUrls?.length ?? 0) > 1 && <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {vehicle.imageUrls?.slice(1).map((photo, index) => <li key={photo} className="relative aspect-[4/3] overflow-hidden rounded-md bg-slate-100">
+              <Image src={photo} alt={vehicle.title + " photo " + (index + 2)} fill className="object-cover" sizes="(min-width: 640px) 25vw, 50vw" />
+            </li>)}
+          </ul>}
         </div>
         <div>
           <div className="flex flex-wrap items-center gap-3">
@@ -61,7 +64,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
               {vehicle.type === "rental" ? "Rental" : "For sale"}
             </span>
             <span className="rounded-md bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700">
-              {vehicle.available ? "Available" : "Reserved"}
+              {vehicle.available ? "Available" : "Unavailable"}
             </span>
           </div>
           <h1 className="mt-5 text-3xl font-bold tracking-tight text-ink sm:text-4xl">{vehicle.title}</h1>
@@ -79,12 +82,12 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href={`/contact?vehicle=${vehicle.id}`}
+            {(vehicle.type === "sale" || vehicle.available) && <Link
+              href={(vehicle.type === "rental" ? "/rentals/request?" : "/contact?") + new URLSearchParams({ vehicle: vehicle.id })}
               className="focus-ring inline-flex min-h-11 items-center justify-center rounded-md bg-palm px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800"
             >
-              Request this vehicle
-            </Link>
+              {vehicle.type === "rental" ? "Request rental" : "Request this vehicle"}
+            </Link>}
             <a
               href={`https://wa.me/18095551234?text=Hello%2C%20I%20am%20interested%20in%20${encodeURIComponent(vehicle.title)}`}
               target="_blank"

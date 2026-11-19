@@ -11,7 +11,8 @@ const navItems = [
   { href: "/sales", label: commonCopy.en.sales },
   { href: "/import-services", label: commonCopy.en.importServices },
   { href: "/contact", label: commonCopy.en.contact },
-  { href: "/admin", label: commonCopy.en.admin }
+  { href: "/account", label: "My rentals" },
+  { href: "/admin", label: "Staff" }
 ];
 
 export function Header() {

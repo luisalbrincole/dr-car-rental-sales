@@ -1,10 +1,11 @@
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { PlaceholderButton } from "@/components/PlaceholderButton";
-import { vehicles } from "@/data/vehicles";
+import { getVehicles } from "@/lib/inventory";
+import Link from "next/link";
 
 export const metadata = {
-  title: "Contact and Booking | DR Car Rental & Sales"
+  title: "Contact and Vehicle Inquiries | DR Car Rental & Sales"
 };
 
 type ContactPageProps = {
@@ -14,14 +15,16 @@ type ContactPageProps = {
 export default async function ContactPage({ searchParams }: ContactPageProps) {
   const { vehicle: selectedVehicle = "" } = await searchParams;
 
+  const vehicles = (await getVehicles()).filter((vehicle) => vehicle.type === "sale");
   return (
     <section className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
       <div>
         <SectionHeader
           eyebrow="Contact"
-          title="Request a booking or vehicle details"
-          description="Send your preferred dates, pickup city, and vehicle. This form is ready to connect later to Supabase, email, or WhatsApp workflows."
+          title="Ask about vehicle sales or import services"
+          description="For rental requests, choose a vehicle and enter your travel dates."
         />
+        <Link href="/rentals" className="mb-6 inline-block font-semibold text-palm underline">Browse rental cars</Link>
         <div className="grid gap-4 text-sm text-slate-700">
           <p className="flex items-center gap-3">
             <MessageCircle className="text-palm" size={20} aria-hidden="true" /> WhatsApp: +1 809 555 1234
@@ -54,8 +57,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
           </label>
           <label className="grid gap-2 text-sm font-medium text-slate-700">
             Request type
-            <select className="focus-ring rounded-md border border-slate-300 px-4 py-3" name="requestType" defaultValue="rental">
-              <option value="rental">Car rental</option>
+            <select className="focus-ring rounded-md border border-slate-300 px-4 py-3" name="requestType" defaultValue="sale">
               <option value="sale">Car purchase</option>
               <option value="general">General question</option>
             </select>

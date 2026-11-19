@@ -122,11 +122,3 @@ export const vehicles: Vehicle[] = [
       "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80"
   }
 ];
-
-export function getFeaturedVehicles(type: Vehicle["type"], limit = 3) {
-  return vehicles.filter((vehicle) => vehicle.type === type).slice(0, limit);
-}
-
-export function getVehicleById(id: string) {
-  return vehicles.find((vehicle) => vehicle.id === id);
-}

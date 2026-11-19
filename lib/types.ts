@@ -17,4 +17,5 @@ export type Vehicle = {
   description: string;
   available: boolean;
   imageUrl: string;
+  imageUrls?: string[];
 };

@@ -2,11 +2,12 @@ import { CheckCircle2, ClipboardCheck, MapPin, MessageCircle, Search, ShieldChec
 import { ButtonLink } from "@/components/ButtonLink";
 import { SectionHeader } from "@/components/SectionHeader";
 import { VehicleGrid } from "@/components/VehicleGrid";
-import { getFeaturedVehicles } from "@/data/vehicles";
+import { getVehicles } from "@/lib/inventory";
 
-export default function HomePage() {
-  const rentals = getFeaturedVehicles("rental");
-  const sales = getFeaturedVehicles("sale");
+export default async function HomePage() {
+  const fleet = await getVehicles();
+  const rentals = fleet.filter((vehicle) => vehicle.type === "rental").slice(0, 3);
+  const sales = fleet.filter((vehicle) => vehicle.type === "sale").slice(0, 3);
 
   return (
     <>

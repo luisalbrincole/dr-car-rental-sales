@@ -21,7 +21,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
       <div className="relative aspect-[4/3] bg-slate-100">
         <Image src={vehicle.imageUrl} alt={vehicle.title} fill className="object-cover" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
         <div className="absolute left-3 top-3 rounded-md bg-white px-3 py-1 text-xs font-semibold text-ink shadow">
-          {vehicle.available ? "Available" : "Reserved"}
+          {vehicle.available ? "Available" : "Unavailable"}
         </div>
       </div>
       <div className="p-5">

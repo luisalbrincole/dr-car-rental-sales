@@ -94,11 +94,16 @@ export default async function Admin({ searchParams }: {
                 <p className="text-sm text-slate-600">{request.pickup}{" "}{t("to", "al")}{" "}{request.return_date} · {requestStatusLabel(request.status, t)}</p>
                 <a href={`mailto:${request.contact_email}`} className="text-sm text-palm underline">{request.contact_email}</a>
               </div>
-              {request.status === "pending" && <form action={reviewRequest} className="flex gap-3">
-                <input type="hidden" name="id" value={request.id} />
-                <button name="status" value="approved" className="rounded-md bg-palm px-3 py-2 font-semibold text-white">{t("Approve", "Aprobar")}</button>
-                <button name="status" value="declined" className="rounded-md border px-3 py-2 font-semibold">{t("Decline", "Rechazar")}</button>
-              </form>}
+              {request.status === "pending" && <div className="flex gap-3">
+                <form action={reviewRequest.bind(null, "approved")}>
+                  <input type="hidden" name="id" value={request.id} />
+                  <button type="submit" className="rounded-md bg-palm px-3 py-2 font-semibold text-white">{t("Approve", "Aprobar")}</button>
+                </form>
+                <form action={reviewRequest.bind(null, "declined")}>
+                  <input type="hidden" name="id" value={request.id} />
+                  <button type="submit" className="rounded-md border px-3 py-2 font-semibold">{t("Decline", "Rechazar")}</button>
+                </form>
+              </div>}
             </li>
           ))}
         </ul>}

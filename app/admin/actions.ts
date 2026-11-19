@@ -80,12 +80,11 @@ export async function saveVehicle(form: FormData) {
   redirect("/admin?saved=1");
 }
 
-export async function reviewRequest(form: FormData) {
+export async function reviewRequest(status: "approved" | "declined", form: FormData) {
   const session = await staffSession();
   if (!session) redirect("/admin");
   const id = String(form.get("id") ?? "");
-  const status = form.get("status");
-  if (status !== "approved" && status !== "declined") redirect("/admin?review=error");
+  if (status !== "approved" && status !== "declined") redirect("/admin?review=error#rental-requests");
   const { data, error } = await session.client.from("rental_requests").update({ status })
     .eq("id", id).eq("status", "pending").select("id").maybeSingle();
   if (error?.code === "23P01") redirect("/admin?review=overlap#rental-requests");

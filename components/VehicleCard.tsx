@@ -1,3 +1,5 @@
+import { getTranslator } from "@/lib/locale";
+import { fuelLabel } from "@/lib/labels";
 import Image from "next/image";
 import Link from "next/link";
 import { Fuel, Gauge, MapPin, Users } from "lucide-react";
@@ -8,20 +10,21 @@ type VehicleCardProps = {
   vehicle: Vehicle;
 };
 
-export function VehicleCard({ vehicle }: VehicleCardProps) {
+export async function VehicleCard({ vehicle }: VehicleCardProps) {
+  const t = await getTranslator();
   const price =
     vehicle.type === "rental" && vehicle.pricePerDay
-      ? `${formatUsd(vehicle.pricePerDay)} / day`
+      ? `${formatUsd(vehicle.pricePerDay)} / ${t("day", "día")}`
       : vehicle.salePrice
         ? formatUsd(vehicle.salePrice)
-        : "Request price";
+        : t("Request price", "Consultar precio");
 
   return (
     <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft">
       <div className="relative aspect-[4/3] bg-slate-100">
         <Image src={vehicle.imageUrl} alt={vehicle.title} fill className="object-cover" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
         <div className="absolute left-3 top-3 rounded-md bg-white px-3 py-1 text-xs font-semibold text-ink shadow">
-          {vehicle.available ? "Available" : "Unavailable"}
+          {vehicle.available ? t("Available", "Disponible") : t("Unavailable", "No disponible")}
         </div>
       </div>
       <div className="p-5">
@@ -38,10 +41,10 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         </div>
         <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-600">
           <span className="flex items-center gap-2">
-            <Users size={16} aria-hidden="true" /> {vehicle.seats} seats
+            <Users size={16} aria-hidden="true" /> {vehicle.seats}{" "}{t("seats", "asientos")}
           </span>
           <span className="flex items-center gap-2">
-            <Fuel size={16} aria-hidden="true" /> {vehicle.fuelType}
+            <Fuel size={16} aria-hidden="true" /> {fuelLabel(vehicle.fuelType, t)}
           </span>
           <span className="flex items-center gap-2">
             <Gauge size={16} aria-hidden="true" /> {formatMileage(vehicle.mileage)} km
@@ -54,7 +57,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
           href={`/vehicles/${vehicle.id}`}
           className="focus-ring mt-5 inline-flex w-full items-center justify-center rounded-md border border-palm px-4 py-3 text-sm font-semibold text-palm transition hover:bg-palm hover:text-white"
         >
-          View details
+          {t("View details", "Ver detalles")}
         </Link>
       </div>
     </article>

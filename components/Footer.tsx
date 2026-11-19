@@ -1,31 +1,32 @@
+import { getTranslator } from "@/lib/locale";
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
-export function Footer() {
+export async function Footer() {
+  const t = await getTranslator();
   return (
     <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
           <p className="font-bold text-ink">DR Car Rental & Sales</p>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            Modern rental and sales service for tourists, residents, and businesses across the
-            Dominican Republic.
+            {t("Modern rental and sales service for tourists, residents, and businesses across the Dominican Republic.", "Alquiler y venta de vehículos para turistas, residentes y empresas en República Dominicana.")}
           </p>
         </div>
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">Explore</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">{t("Explore", "Explorar")}</p>
           <div className="mt-3 grid gap-2 text-sm">
             <Link className="text-slate-600 hover:text-palm" href="/rentals">
-              Rental cars
+              {t("Rental cars", "Vehículos de alquiler")}
             </Link>
             <Link className="text-slate-600 hover:text-palm" href="/sales">
-              Cars for sale
+              {t("Cars for sale", "Vehículos en venta")}
             </Link>
             <Link className="text-slate-600 hover:text-palm" href="/import-services">
-              Import services
+              {t("Import services", "Servicios de importación")}
             </Link>
             <Link className="text-slate-600 hover:text-palm" href="/contact">
-              Contact and booking
+              {t("Contact and booking", "Contacto y reservas")}
             </Link>
           </div>
         </div>
@@ -38,7 +39,7 @@ export function Footer() {
             rel="noreferrer"
           >
             <MessageCircle size={18} aria-hidden="true" />
-            Contact on WhatsApp
+            {t("Contact on WhatsApp", "Contáctanos por WhatsApp")}
           </a>
         </div>
       </div>

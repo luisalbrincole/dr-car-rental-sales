@@ -1,22 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { Car, Languages } from "lucide-react";
-import { commonCopy, languages } from "@/lib/i18n";
+import { languages, localeCookie, type Locale } from "@/lib/i18n";
 
 const navItems = [
-  { href: "/", label: commonCopy.en.home },
-  { href: "/rentals", label: commonCopy.en.rentals },
-  { href: "/sales", label: commonCopy.en.sales },
-  { href: "/import-services", label: commonCopy.en.importServices },
-  { href: "/contact", label: commonCopy.en.contact },
-  { href: "/account", label: "My rentals" },
-  { href: "/admin", label: "Staff" }
+  { href: "/", en: "Home", es: "Inicio" },
+  { href: "/rentals", en: "Rentals", es: "Alquileres" },
+  { href: "/sales", en: "Cars for Sale", es: "Vehículos en venta" },
+  { href: "/import-services", en: "Import Services", es: "Importación" },
+  { href: "/contact", en: "Contact", es: "Contacto" },
+  { href: "/account", en: "My rentals", es: "Mis alquileres" },
+  { href: "/admin", en: "Staff", es: "Personal" }
 ];
 
-export function Header() {
+export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+
+  function changeLanguage(next: Locale) {
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = localeCookie + "=" + next + "; Path=/; Max-Age=31536000; SameSite=Lax" + secure;
+    startTransition(() => router.refresh());
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -27,20 +36,29 @@ export function Header() {
           </span>
           <span>
             <span className="block text-base font-bold text-ink">DR Car Rental & Sales</span>
-            <span className="block text-xs text-slate-500">Rentals and vehicle sales</span>
+            <span className="block text-xs text-slate-500">{locale === "es" ? "Alquiler y venta de vehículos" : "Rentals and vehicle sales"}</span>
           </span>
         </Link>
 
         <div className="flex flex-wrap items-center gap-2">
           {navItems.map((item) => (
-            <NavLink key={item.href} href={item.href} label={item.label} pathname={pathname} />
+            <NavLink key={item.href} href={item.href} label={item[locale]} pathname={pathname} />
           ))}
           <div className="ml-0 flex items-center gap-1 rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-600 sm:ml-2">
             <Languages size={14} aria-hidden="true" />
             {languages.map((language) => (
-              <span key={language.code} className="rounded px-1.5 py-1">
+              <button
+                key={language.code}
+                type="button"
+                lang={language.code}
+                aria-label={language.label}
+                aria-pressed={language.code === locale}
+                disabled={pending}
+                onClick={() => changeLanguage(language.code)}
+                className={`focus-ring rounded px-1.5 py-1 font-semibold ${language.code === locale ? "bg-palm text-white" : "hover:bg-slate-200"}`}
+              >
                 {language.code.toUpperCase()}
-              </span>
+              </button>
             ))}
           </div>
         </div>

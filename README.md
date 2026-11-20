@@ -27,7 +27,7 @@ The public catalog can be browsed without signing in. A Google account is requir
 
 ### Configure the backend
 
-1. Open the Supabase project SQL Editor and run [supabase/schema.sql](supabase/schema.sql) once. It installs the inventory, rental request, and staff permissions and loads the existing sample listings. Review the sample listings and their photos before accepting real requests.
+1. Open the Supabase project SQL Editor and run [supabase/schema.sql](supabase/schema.sql), then [supabase/cancel-rentals.sql](supabase/cancel-rentals.sql), once each. They install the inventory, rental requests, staff permissions, and cancellation function and load the existing sample listings. Review the sample listings and their photos before accepting real requests.
 2. Configure [Google sign-in in Supabase](https://supabase.com/docs/guides/auth/social-login/auth-google). Enter the Google OAuth client ID and secret in Supabase under the Google provider. Use the Supabase callback shown there as the authorized redirect URI in Google Cloud.
 3. Set the Supabase Auth Site URL to the production website origin. Add the website OAuth callback to the Supabase [redirect allowlist](https://supabase.com/docs/guides/auth/redirect-urls), for example `https://dr-car-rental-sales.vercel.app/auth/callback`. Add `http://localhost:3000/auth/callback` for local development if needed.
 4. Configure the three variables in [.env.example](.env.example) in Vercel and use the production website origin for `APP_ORIGIN`. For local development, copy the example to `.env.local` and fill in the Supabase values. The application uses the **publishable key**.

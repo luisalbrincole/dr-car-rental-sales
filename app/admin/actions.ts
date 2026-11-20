@@ -103,3 +103,13 @@ export async function reviewRequest(status: "approved" | "declined", form: FormD
   revalidatePath("/account");
   redirect("/admin?review=saved#rental-requests");
 }
+
+export async function cancelRental(form: FormData) {
+  const session = await staffSession();
+  if (!session) redirect("/admin");
+  const id = String(form.get("id") ?? "");
+  const { data, error } = await session.client.rpc("cancel_rental_request", { request_id: id });
+  if (error || !data) redirect("/admin?review=cancel-error#rental-requests");
+  revalidatePath("/account");
+  redirect("/admin?review=canceled#rental-requests");
+}

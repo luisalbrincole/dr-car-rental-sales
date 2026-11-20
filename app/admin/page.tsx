@@ -8,6 +8,7 @@ import { signOut } from "@/app/sign-in/actions";
 import { StaffAccess } from "./StaffAccess";
 import { VehicleEditor } from "./VehicleEditor";
 import { reviewRequest } from "./actions";
+import { CancelRentalForm } from "./CancelRentalForm";
 
 export default async function Admin({ searchParams }: {
   searchParams: Promise<{ edit?: string; new?: string; saved?: string; error?: string; review?: string; staff?: string }>;
@@ -83,6 +84,8 @@ export default async function Admin({ searchParams }: {
       <section id="rental-requests" className="mt-10 scroll-mt-24">
         <h2 className="text-xl font-semibold">{t("Rental requests", "Solicitudes de alquiler")}</h2>
         {review === "saved" && <p role="status" className="mt-2 text-palm">{t("Request updated.", "Solicitud actualizada.")}</p>}
+        {review === "canceled" && <p role="status" className="mt-2 text-palm">{t("Rental canceled. Its dates are no longer reserved.", "Alquiler cancelado. Las fechas ya no están reservadas.")}</p>}
+        {review === "cancel-error" && <p role="alert" className="mt-2 text-red-700">{t("The rental could not be canceled. Refresh and check its current status.", "No se pudo cancelar el alquiler. Actualiza la página y revisa su estado.")}</p>}
         {review === "overlap" && <p role="alert" className="mt-2 text-red-700">{t("This vehicle already has an approved rental for overlapping dates.", "Este vehículo ya tiene un alquiler aprobado que coincide con esas fechas.")}</p>}
         {review === "error" && <p role="alert" className="mt-2 text-red-700">{t("The request could not be updated. Check its status and pickup date.", "No se pudo actualizar la solicitud. Revisa su estado y la fecha de recogida.")}</p>}
         {requests.data.length === 0 && <p className="mt-3 text-slate-600">{t("No rental requests yet.", "Todavía no hay solicitudes de alquiler.")}</p>}
@@ -104,6 +107,14 @@ export default async function Admin({ searchParams }: {
                   <button type="submit" className="rounded-md border px-3 py-2 font-semibold">{t("Decline", "Rechazar")}</button>
                 </form>
               </div>}
+              {request.status === "approved" && <CancelRentalForm
+                id={request.id}
+                label={t("Cancel rental", "Cancelar alquiler")}
+                confirmation={t(
+                  `Cancel ${titles.get(request.vehicle_id) ?? "this rental"} for ${request.pickup} to ${request.return_date}?`,
+                  `¿Cancelar el alquiler de ${titles.get(request.vehicle_id) ?? "este vehículo"} del ${request.pickup} al ${request.return_date}?`
+                )}
+              />}
             </li>
           ))}
         </ul>}

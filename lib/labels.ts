@@ -16,6 +16,7 @@ export function requestStatusLabel(status: string, t: Translator) {
     case "pending": return t("Pending", "Pendiente");
     case "approved": return t("Approved", "Aprobada");
     case "declined": return t("Declined", "Rechazada");
+    case "canceled": return t("Canceled", "Cancelada");
     default: return status;
   }
 }

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { scheduleTestEmail } from "@/lib/email";
 import { redirect } from "next/navigation";
 import { staffSession } from "@/lib/access";
 import type { Vehicle } from "@/lib/types";
@@ -86,9 +87,19 @@ export async function reviewRequest(status: "approved" | "declined", form: FormD
   const id = String(form.get("id") ?? "");
   if (status !== "approved" && status !== "declined") redirect("/admin?review=error#rental-requests");
   const { data, error } = await session.client.from("rental_requests").update({ status })
-    .eq("id", id).eq("status", "pending").select("id").maybeSingle();
+    .eq("id", id).eq("status", "pending").select("id, vehicle_id, pickup, return_date").maybeSingle();
   if (error?.code === "23P01") redirect("/admin?review=overlap#rental-requests");
   if (error || !data) redirect("/admin?review=error#rental-requests");
+  if (status === "approved") {
+    scheduleTestEmail("approved:" + data.id, async (origin) => {
+      const { data: listing } = await session.client.from("fleet").select("details").eq("id", data.vehicle_id).maybeSingle();
+      const title = listing?.details?.title ?? "your selected vehicle";
+      return {
+        subject: "Rental request approved",
+        text: `Your rental request for ${title} from ${data.pickup} to ${data.return_date} was approved.\n\nView your rental: ${new URL("/account", origin)}`
+      };
+    });
+  }
   revalidatePath("/account");
   redirect("/admin?review=saved#rental-requests");
 }
